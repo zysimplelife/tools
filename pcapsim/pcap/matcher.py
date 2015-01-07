@@ -32,6 +32,7 @@ class PcapMatcher:
     if hasattr(pkt, 'load'):
         #print "recieved pkt load" , repr(pkt.load)
         l_index = self.peers.get(peer, 0)
+	print "Start to match from index:" , l_index
         if self.conf.get('wrap', False):
           l_index = l_index % len(self.pkts)
           pkts=self.pkts[l_index:]+self.pkts[0:l_index]
@@ -42,6 +43,8 @@ class PcapMatcher:
         if begin != -1:
           begin += 1
           end = begin + self.get_first_send_to_me(pkts[begin:]) 
+          print "adjust request between "  , begin, ":", end
           self.peers[peer] = l_index+end
-          return self.protocol.adjust(pkt, filter(lambda pkt: not is_ack(pkt), pkts[begin:end]))
+          #return self.protocol.adjust(pkt, filter(lambda pkt: not is_ack(pkt), pkts[begin:end]))
+          return self.protocol.adjust(pkt, filter(lambda pkt:not is_tome(pkt), pkts[begin:end]))
     return []

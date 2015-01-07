@@ -18,6 +18,9 @@ def has_same_load(pkt, load):
 def is_ack(pkt):
     return pkt[TCP].flags == tcp_flag_vals["A"]
 
+def is_tome(pkt):
+    return pkt[IP].dst == "10.32.33.18"
+
 def same_direction(p1, p2):
     return (p1[IP].dst == p2[IP].dst and
            p1[IP].src == p2[IP].src and
